@@ -33,7 +33,54 @@
                                         <div class="col-md-6 col-12 mx-auto">
                                             <h3>Cập nhập</h3>
                                             <hr />
-                                            <form:form method="post" action="/admin/user/update"
+                                            <form:form method="post" action="/admin/user/update" modelAttribute="newUser" enctype="multipart/form-data">
+                                            
+                                                <div class="mb-3">
+                                                    <label class="form-label">Email:</label>
+                                                    <form:input type="email" class="form-control" path="email" readonly="true" />
+                                                    <form:errors path="email" cssClass="text-danger" />
+                                                </div>
+                                            
+                                                <div class="mb-3">
+                                                    <label class="form-label">Mật khẩu:</label>
+                                                    <form:password class="form-control" path="password" />
+                                                    <form:errors path="password" cssClass="text-danger" />
+                                                </div>
+                                            
+                                                <div class="mb-3">
+                                                    <label class="form-label">Họ tên:</label>
+                                                    <form:input type="text" class="form-control" path="fullName" />
+                                                    <form:errors path="fullName" cssClass="text-danger" />
+                                                </div>
+                                            
+                                                <div class="mb-3">
+                                                    <label class="form-label">Số điện thoại:</label>
+                                                    <form:input type="text" class="form-control" path="phone" />
+                                                    <form:errors path="phone" cssClass="text-danger" />
+                                                </div>
+                                            
+                                                <div class="mb-3">
+                                                    <label class="form-label">Địa chỉ:</label>
+                                                    <form:input type="text" class="form-control" path="address" />
+                                                    <form:errors path="address" cssClass="text-danger" />
+                                                </div>
+                                            
+                                                <div class="mb-3">
+                                                    <label class="form-label">Ảnh đại diện hiện tại:</label><br />
+                                                    <c:if test="${not empty newUser.avatar}">
+                                                        <img src="/images/avatar/${newUser.avatar}" alt="Avatar" width="100" height="100" />
+                                                    </c:if>
+                                                </div>
+                                            
+                                                <div class="mb-3">
+                                                    <label class="form-label">Chọn ảnh mới:</label>
+                                                    <input type="file" class="form-control" name="flowershopFile" />
+                                                </div>
+                                            
+                                                <button type="submit" class="btn btn-warning">Cập nhật</button>
+                                            </form:form>
+
+                                            <!-- <form:form method="post" action="/admin/user/update"
                                                 modelAttribute="newUser">
 
                                                 <div class="mb-3" style="display: none;">
@@ -61,7 +108,7 @@
                                                 </div>
 
                                                 <button type="submit" class="btn btn-warning">Cập nhập</button>
-                                            </form:form>
+                                            </form:form> -->
                                         </div>
 
                                     </div>

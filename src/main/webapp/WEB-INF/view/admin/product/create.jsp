@@ -73,6 +73,9 @@
                                                 <c:set var="errorQuantity">
                                                     <form:errors path="quantity" cssClass="invalid-feedback" />
                                                 </c:set>
+                                                <c:set var="errorImage">
+                                                    <form:errors path="images" cssClass="invalid-feedback" />
+                                                </c:set>
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Tên:</label>
@@ -111,44 +114,71 @@
                                                 </div>
 
                                                 <div class="mb-3 col-12 col-md-6">
+                                                    <c:set var="errorFactory">
+                                                        <form:errors path="factory" cssClass="invalid-feedback" />
+                                                    </c:set>
                                                     <label class="form-label">Nơi cung cấp:</label>
-                                                    <select id="factory" name="factoryId" class="form-select">
-                                                        <option value="">chọn Nơi cung cấp</option>
+                                                    <select id="factory" name="factoryId" class="form-select ${not empty errorFactory ? 'is-invalid' : ''}">
+                                                        <option value="">Chọn nơi cung cấp</option>
                                                         <c:forEach var="factory" items="${factories}">
                                                             <option value="${factory.id}">${factory.name}</option>
                                                         </c:forEach>
                                                     </select>
+                                                    
+                                                    ${errorFactory}
                                                 </div>
-
+                                                
                                                 <div class="mb-3 col-12 col-md-6">
+                                                    <c:set var="errorTarget">
+                                                        <form:errors path="target" cssClass="invalid-feedback" />
+                                                    </c:set>
                                                     <label class="form-label">Mục đích :</label>
-                                                    <select id="target" name="targetId" class="form-select">
+                                                    <select id="target" name="targetId" class="form-select ${not empty errorTarget ? 'is-invalid' : ''}">
                                                         <option value="">Chọn mục đích</option>
                                                         <c:forEach var="target" items="${targets}">
                                                             <option value="${target.id}">${target.name}</option>
                                                         </c:forEach>
                                                     </select>
+                                                    
+                                                    ${errorTarget}
+                                                </div>
+                                                <!-- <c:if test="${not empty categoryError}">
+                                                    <div class="alert alert-danger">${categoryError}</div>
+                                                </c:if>
+                                                <c:if test="${not empty factoryError}">
+                                                    <div class="alert alert-danger">${factoryError}</div>
+                                                </c:if>
+                                                <c:if test="${not empty targetError}">
+                                                    <div class="alert alert-danger">${targetError}</div>
+                                                </c:if> -->
+
+                                                
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <c:set var="errorCategory">
+                                                        <form:errors path="category" cssClass="invalid-feedback" />
+                                                    </c:set>
+                                                    <label class="form-label">Danh mục :</label>
+                                                    <select id="category" name="categoryId" class="form-select ${not empty errorCategory ? 'is-invalid' : ''}">
+                                                        <option value="">Chọn danh mục</option>
+                                                        <c:forEach var="category" items="${categories}">
+                                                            <option value="${category.id}">${category.name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                    
+                                                    ${errorCategory}
                                                 </div>
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label for="files" class="form-label">Ảnh:</label>
-                                                    <input class="form-control" type="file" id="files"
-                                                        accept=".png, .jpg, .jpeg" name="files" multiple />
+                                                    <input class="form-control ${not empty errorImage ? 'is-invalid' : ''}" type="file" id="files"
+                                                        accept=".png, .jpg, .jpeg" name="files" multiple part="images"/>
+                                                        ${errorImage}
                                                 </div>
                                                 <div class="col-12 mb-3" id="filePreviewContainer">
                                                     <!-- Image previews will be displayed here -->
                                                 </div>
 
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Danh mục :</label>
-                                                    <select id="category" name="categoryId" class="form-select">
-                                                        <option value="">chọn danh mục</option>
-                                                        <c:forEach var="category" items="${categories}">
-                                                            <option value="${category.id}">${category.name}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
-
+                                
                                                 <div class="col-12 mb-5">
                                                     <button type="submit" class="btn btn-primary">Lưu</button>
                                                 </div>

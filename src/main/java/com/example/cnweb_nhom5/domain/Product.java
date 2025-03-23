@@ -35,35 +35,40 @@ public class Product implements Serializable {
     @NotEmpty(message = "Tên sản phẩm không được để trống")
     private String name;
 
-    @NotNull
-    @DecimalMin(value = "0", inclusive = false, message = "Price phải lớn hơn 0")
+    @NotNull(message = "Giá sản phẩm không được để trống")
+    @DecimalMin(value = "0", inclusive = false, message = "Giá phải lớn hơn 0")
     private double price;
 
+    @NotNull(message = "Ảnh sản phẩm không được để trống")
     private String images;
 
     @NotNull
-    @NotEmpty(message = "detailDesc không được để trống")
+    @NotEmpty(message = "Chi tiết không được để trống")
     @Column(columnDefinition = "MEDIUMTEXT")
     @Lob
     private String detailDesc;
 
     @NotNull
-    @NotEmpty(message = "shortDesc không được để trống")
+    @NotEmpty(message = "Chi tiết ngắn không được để trống")
     private String shortDesc;
 
     @NotNull
-    @Min(value = 0, message = "Số lượng cần lớn hơn hoặc bằng 0")
+    @DecimalMin(value = "0", inclusive = false, message = "Số lượng phải lớn hơn 0")
     private long quantity;
 
     private long sold;
+
+    @NotNull(message = "Vui lòng chọn nơi cung cấp")
     @ManyToOne
     @JoinColumn(name = "factory_id")
     private Factory factory;
 
+    @NotNull(message = "Vui lòng chọn mục đích")
     @ManyToOne
     @JoinColumn(name = "target_id")
     private Target target;
 
+    @NotNull(message = "Vui lòng chọn danh mục")
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

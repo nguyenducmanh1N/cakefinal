@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ import com.example.cnweb_nhom5.domain.Review;
 import com.example.cnweb_nhom5.domain.Target;
 import com.example.cnweb_nhom5.domain.User;
 import com.example.cnweb_nhom5.domain.Voucher;
+import com.example.cnweb_nhom5.domain.dto.OrderDTO;
 import com.example.cnweb_nhom5.domain.dto.ProductCriteriaDTO;
 import com.example.cnweb_nhom5.repository.VoucherRepository;
 
@@ -52,6 +54,8 @@ import com.paypal.base.rest.PayPalRESTException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+
 import com.paypal.api.payments.Payment;
 
 @Controller
@@ -351,6 +355,7 @@ public class ItemController {
     @PostMapping("/place-order")
     public String handlePlaceOrder(
             HttpServletRequest request,
+            // @Valid @ModelAttribute("cart") OrderDTO orderDTO, BindingResult result,
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
             @RequestParam("receiverPhone") String receiverPhone,

@@ -1,8 +1,13 @@
 package com.example.cnweb_nhom5.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -19,35 +24,51 @@ public class Voucher {
     private Long id;
 
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "Tên không được để trống")
+    @Size(min = 3, message = "Tên phải có tối thiểu 3 ký tự")
     private String name;
 
     @Column(name = "code", unique = true, nullable = false)
+    @NotBlank(message = "Code không được để trống")
+    @Size(min = 3, message = "Code phải có tối thiểu 3 ký tự")
     private String code;
 
     @Column(name = "discount_value", nullable = false)
-    @Min(value = 0, message = "Discount value  phai > 0")
-    @Max(value = 100, message = "Discount value  k vuot qua 100")
+    @NotNull(message = "Giá trị voucher không được để trống")
+    @Min(value = 1, message = "Giá trị voucher phải lớn hơn 0")
+    @Max(value = 50, message = "Giá trị voucher không vượt quá 50")
     private double discountValue;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "start_date", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd") // Định dạng ngày tháng
+    @NotNull(message = "Ngày bắt đầu không được để trống")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "end_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd") // Định dạng ngày tháng
+    @Column(name = "end_date", nullable = false)
+    @NotNull(message = "Ngày kết thúc không được để trống")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
     @Column(name = "quantity", nullable = false)
+    @NotNull(message = "Số lượng không được để trống")
+    @Min(value = 1, message = "Số lượng phải lớn hơn 0")
     private int quantity;
 
     @Column(name = "minimum", nullable = false)
+    @NotNull(message = "Giá trị tối thiểu không được để trống")
+    @Min(value = 0, message = "Giá trị tối thiểu phải lớn hơn 0")
     private int minimum;
 
     @CreationTimestamp
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
+
+    @AssertTrue(message = "Ngày kết thúc phải sau ngày bắt đầu")
+    public boolean isEndDateAfterStartDate() {
+        return endDate != null && startDate != null && endDate.after(startDate);
+    }
 
     public boolean isValid(Date now) {
         return (quantity > 0 && now.after(startDate) && now.before(endDate));

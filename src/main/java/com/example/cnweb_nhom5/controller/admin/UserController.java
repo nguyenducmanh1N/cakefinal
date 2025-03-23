@@ -127,27 +127,55 @@ public class UserController {
         return "admin/user/update";
     }
 
-    @PostMapping("/admin/user/update")
-    public String postUpdateUser(Model model, @ModelAttribute("newUser") User user,
-            @RequestParam("flowershopFile") MultipartFile file,
-            BindingResult newProductBindingResult) {
+    // @PostMapping("/admin/user/update")
+    // public String postUpdateUser(Model model, @ModelAttribute("newUser") User
+    // user,
+    // @RequestParam("flowershopFile") MultipartFile file,
+    // BindingResult newProductBindingResult) {
 
-        if (newProductBindingResult.hasErrors()) {
-            return "admin/product/update";
+    // if (newProductBindingResult.hasErrors()) {
+    // return "admin/product/update";
+    // }
+    // User currentUser = this.userService.getUserById(user.getId());
+    // if (currentUser != null) {
+    // if (!file.isEmpty()) {
+    // String img = this.uploadService.handleSaveUploadFile(file, "product");
+    // currentUser.setAvatar(img);
+    // }
+    // currentUser.setAddress(user.getAddress());
+    // currentUser.setFullName(user.getFullName());
+    // currentUser.setPhone(user.getPhone());
+
+    // // bug here
+    // this.userService.handleSaveUser(currentUser);
+    // }
+    // return "redirect:/admin/user";
+    // }
+    @PostMapping("/admin/user/update")
+    public String postUpdateUser(Model model,
+            @Valid @ModelAttribute("newUser") User user,
+            BindingResult bindingResult,
+            @RequestParam("flowershopFile") MultipartFile file) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("newUser", user);
+            return "admin/user/update"; // Đảm bảo đường dẫn đúng
         }
+
         User currentUser = this.userService.getUserById(user.getId());
         if (currentUser != null) {
             if (!file.isEmpty()) {
-                String img = this.uploadService.handleSaveUploadFile(file, "product");
+                String img = this.uploadService.handleSaveUploadFile(file, "avatar");
                 currentUser.setAvatar(img);
             }
+
             currentUser.setAddress(user.getAddress());
             currentUser.setFullName(user.getFullName());
             currentUser.setPhone(user.getPhone());
 
-            // bug here
             this.userService.handleSaveUser(currentUser);
         }
+
         return "redirect:/admin/user";
     }
 

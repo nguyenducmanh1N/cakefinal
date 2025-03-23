@@ -133,12 +133,12 @@
                                     <div class="mt-5 row g-4 justify-content-start">
                                         <div class="col-12 col-md-6">
                                             <div class="p-4 ">
-                                                <h5>Thông Tin Người Nhận
-                                                </h5>
+                                                <h5>Thông Tin Người Nhận</h5>
                                                 <div class="row">
                                                     <div class="col-12 form-group mb-3">
                                                         <label>Tên người nhận</label>
-                                                        <input class="form-control" name="receiverName" required />
+                                                        <input class="form-control" name="receiverName" required pattern="^[a-zA-ZÀ-Ỹà-ỹ\s]+$"
+                                                            title="Tên người nhận chỉ chứa chữ cái và không để trống." />
                                                     </div>
                                                     <div class="col-12 form-group mb-3">
                                                         <label>Địa chỉ người nhận</label>
@@ -146,11 +146,13 @@
                                                     </div>
                                                     <div class="col-12 form-group mb-3">
                                                         <label>Số điện thoại</label>
-                                                        <input class="form-control" name="receiverPhone" required />
+                                                        <input class="form-control" name="receiverPhone" required pattern="^0\d{9,10}$"
+                                                            title="Số điện thoại phải từ 10 đến 11 số và bắt đầu bằng 0." />
                                                     </div>
                                                     <div class="col-12 form-group mb-3">
-                                                        <label>Ghi chú </label>
-                                                        <input  placeholder=" Lời chúc  mà bạn muốn chúng tôi viết kèm với bánh "class="form-control" name="receiverNote" required />
+                                                        <label>Ghi chú</label>
+                                                        <input placeholder="Lời chúc mà bạn muốn chúng tôi viết kèm với bánh" class="form-control" name="receiverNote"
+                                                            required />
                                                     </div>
                                                     <div class="mt-4">
                                                         <i class="fas fa-arrow-left"></i>

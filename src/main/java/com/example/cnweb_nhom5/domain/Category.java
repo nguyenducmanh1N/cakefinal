@@ -8,21 +8,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "categories")
 public class Category {
-    
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
-    @NotEmpty(message = "Tên danh mục không được để trống")
+    @Size(min = 3, message = "Tên danh mục phải có tối thiểu 3 ký tự")
+    @NotBlank(message = "Tên danh mục không được để chống")
     private String name;
 
     private String description;
@@ -67,5 +69,4 @@ public class Category {
         this.products = products;
     }
 
-    
 }

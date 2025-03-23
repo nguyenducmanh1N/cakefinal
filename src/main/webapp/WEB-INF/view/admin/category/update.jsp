@@ -34,6 +34,9 @@
                                             <hr />
                                             <form:form method="post" action="/admin/category/update" class="row"
                                                 enctype="multipart/form-data" modelAttribute="newCategory">
+                                                <c:set var="errorName">
+                                                    <form:errors path="name" cssClass="invalid-feedback" />
+                                                </c:set>
 
                                                 <!-- Hidden Field for ID -->
                                                 <div class="mb-3" style="display: none;">

@@ -49,7 +49,22 @@ public class VoucherController {
     }
 
     @PostMapping("admin/voucher/create")
-    public String createVoucher(@ModelAttribute Voucher voucher) {
+    public String createVoucher(@Valid @ModelAttribute("newVoucher") Voucher voucher, BindingResult result,
+            Model model) {
+
+        if (voucherService.isCodeExists(voucher.getCode())) {
+            result.rejectValue("code", "error.voucher", "Mã voucher đã tồn tại");
+        }
+
+        if (!voucher.isEndDateAfterStartDate()) {
+            result.rejectValue("endDate", "error.newVoucher", "Ngày kết thúc phải sau ngày bắt đầu");
+        }
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+            model.addAttribute("newVoucher", voucher);
+            return "admin/voucher/create"; // Quay lại form với lỗi
+        }
+
         voucherService.createVoucher(voucher);
         return "redirect:/admin/voucher";
     }
@@ -72,20 +87,28 @@ public class VoucherController {
     }
 
     @PostMapping("/admin/voucher/update")
-    public String handleUpdateVoucher(@ModelAttribute("newVoucher") @Valid Voucher vc,
+    public String handleUpdateVoucher(@ModelAttribute("newVoucher") @Valid Voucher voucher,
             BindingResult newVoucherBindingResult) {
+        if (voucherService.isCodeExists(voucher.getCode())) {
+            newVoucherBindingResult.rejectValue("code", "error.voucher", "Mã voucher đã tồn tại");
+        }
+
+        if (!voucher.isEndDateAfterStartDate()) {
+            newVoucherBindingResult.rejectValue("endDate", "error.newVoucher", "Ngày kết thúc phải sau ngày bắt đầu");
+        }
+
         if (newVoucherBindingResult.hasErrors()) {
             return "admin/voucher/update";
         }
-        Voucher currentVoucher = this.voucherService.getVoucherById(vc.getId()).get();
+        Voucher currentVoucher = this.voucherService.getVoucherById(voucher.getId()).get();
         if (currentVoucher != null) {
-            currentVoucher.setName(vc.getName());
-            currentVoucher.setCode(vc.getCode());
-            currentVoucher.setDiscountValue(vc.getDiscountValue());
-            currentVoucher.setStartDate(vc.getStartDate());
-            currentVoucher.setEndDate(vc.getEndDate());
-            currentVoucher.setQuantity(vc.getQuantity());
-            currentVoucher.setMinimum(vc.getMinimum());
+            currentVoucher.setName(voucher.getName());
+            currentVoucher.setCode(voucher.getCode());
+            currentVoucher.setDiscountValue(voucher.getDiscountValue());
+            currentVoucher.setStartDate(voucher.getStartDate());
+            currentVoucher.setEndDate(voucher.getEndDate());
+            currentVoucher.setQuantity((int) voucher.getQuantity());
+            currentVoucher.setMinimum(voucher.getMinimum());
             this.voucherService.createVoucher(currentVoucher);
         }
         return "redirect:/admin/voucher";

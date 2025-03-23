@@ -12,14 +12,14 @@ import jakarta.validation.constraints.Size;
 @RegisterChecked
 public class RegisterDTO {
 
-    @NotBlank(message = "Tên không được để trống")
     @Size(min = 3, message = "Tên phải có tối thiểu 3 ký tự")
     @Pattern(regexp = "^[a-zA-ZÀ-ỹ]+$", message = "Tên chỉ được chứa chữ cái")
+    @NotBlank(message = "Tên không được để trống")
     private String firstName;
 
     private String lastName;
 
-    @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @Email(message = "Email phải có đuôi @gmail.com", regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$")
     @NotBlank(message = "Email không được để trống")
     private String email;
 

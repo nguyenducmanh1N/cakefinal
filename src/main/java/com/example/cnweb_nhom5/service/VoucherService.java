@@ -18,6 +18,10 @@ public class VoucherService {
         this.voucherRepository = voucherRepository;
     }
 
+    public boolean isCodeExists(String code) {
+        return voucherRepository.existsByCode(code);
+    }
+
     public List<Voucher> getAllVouchers() {
         return voucherRepository.findAll();
     }
@@ -27,6 +31,7 @@ public class VoucherService {
     }
 
     public Voucher createVoucher(Voucher voucher) {
+
         return voucherRepository.save(voucher);
     }
 

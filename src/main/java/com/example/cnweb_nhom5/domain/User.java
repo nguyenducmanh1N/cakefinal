@@ -41,10 +41,10 @@ public class User implements Serializable {
     private String password;
 
     @NotNull
-    @Size(min = 3, message = "Họ tên phải có tối thiểu 3 ký tự")
+    @Size(min = 3, message = "Họ tên không được trống và phải có tối thiểu 3 ký tự")
     private String fullName;
 
-    @NotNull(message = "Địa chỉ không được để trống")
+    @NotBlank(message = "Địa chỉ không được để trống")
     @Size(min = 3, message = " phải có tối thiểu 3 ký tự")
     private String address;
 

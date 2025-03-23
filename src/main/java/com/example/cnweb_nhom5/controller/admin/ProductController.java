@@ -91,21 +91,78 @@ public class ProductController {
         return "admin/product/create";
     }
 
+    // @PostMapping("/admin/product/create")
+    // public String handleCreateProduct(
+    // @ModelAttribute("newProduct") @Valid Product pr,
+    // BindingResult newProductBindingResult,
+    // @RequestParam("categoryId") Long categoryId,
+    // @RequestParam("factoryId") Long factoryId,
+    // @RequestParam("targetId") Long targetId,
+    // @RequestParam("files") MultipartFile[] files) {
+    // // validate
+    // if (newProductBindingResult.hasErrors()) {
+
+    // return "admin/product/create";
+    // }
+
+    // // upload image
+    // // String image = this.uploadService.handleSaveUploadFile(file, "product");
+    // StringBuilder images = new StringBuilder();
+    // for (MultipartFile file : files) {
+    // if (!file.isEmpty()) {
+    // String image = this.uploadService.handleSaveUploadFile(file, "product");
+    // images.append(image).append(";");
+    // }
+    // }
+    // pr.setImages(images.toString());
+
+    // // Gán category vào product
+    // //
+    // pr.setCategory(this.categoryService.getCategorybyName(pr.getCategory().getName()));
+    // Factory factory = this.factoryService.findById(factoryId);
+    // Target target = this.targetService.findById(targetId);
+    // Category category = this.categoryService.findById(categoryId); // Tìm
+    // Category theo categoryId
+
+    // pr.setCategory(category);
+    // pr.setFactory(factory);
+    // pr.setTarget(target);
+    // // Lưu sản phẩm vào database
+
+    // this.productService.createProduct(pr);
+    // return "redirect:/admin/product";
+    // }
+
     @PostMapping("/admin/product/create")
     public String handleCreateProduct(
             @ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
-            @RequestParam("categoryId") Long categoryId,
-            @RequestParam("factoryId") Long factoryId,
-            @RequestParam("targetId") Long targetId,
-            @RequestParam("files") MultipartFile[] files) {
-        // validate
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "factoryId", required = false) Long factoryId,
+            @RequestParam(value = "targetId", required = false) Long targetId,
+            @RequestParam("files") MultipartFile[] files,
+            Model model) {
+
+        // Kiểm tra lỗi validation của sản phẩm
         if (newProductBindingResult.hasErrors()) {
             return "admin/product/create";
         }
 
-        // upload image
-        // String image = this.uploadService.handleSaveUploadFile(file, "product");
+        // Kiểm tra nếu categoryId, factoryId hoặc targetId chưa được chọn
+        if (categoryId == null || factoryId == null || targetId == null) {
+            if (categoryId == null) {
+                model.addAttribute("categoryError", "Vui lòng chọn danh mục.");
+            }
+            if (factoryId == null) {
+                model.addAttribute("factoryError", "Vui lòng chọn nhà cung cấp.");
+            }
+            if (targetId == null) {
+                model.addAttribute("targetError", "Vui lòng chọn mục tiêu.");
+            }
+            return "admin/product/create";
+        }
+
+        // Upload ảnh sản phẩm
         StringBuilder images = new StringBuilder();
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
@@ -115,18 +172,18 @@ public class ProductController {
         }
         pr.setImages(images.toString());
 
-        // Gán category vào product
-        // pr.setCategory(this.categoryService.getCategorybyName(pr.getCategory().getName()));
+        // Gán category, factory, target vào sản phẩm
         Factory factory = this.factoryService.findById(factoryId);
         Target target = this.targetService.findById(targetId);
-        Category category = this.categoryService.findById(categoryId); // Tìm Category theo categoryId
+        Category category = this.categoryService.findById(categoryId);
 
         pr.setCategory(category);
         pr.setFactory(factory);
         pr.setTarget(target);
-        // Lưu sản phẩm vào database
 
+        // Lưu sản phẩm vào database
         this.productService.createProduct(pr);
+
         return "redirect:/admin/product";
     }
 
@@ -187,12 +244,28 @@ public class ProductController {
     @PostMapping("/admin/product/update")
     public String handleUpdateProduct(@ModelAttribute("newProduct") @Valid Product pr,
             BindingResult newProductBindingResult,
-            @RequestParam("categoryId") Long categoryId,
-            @RequestParam("files") MultipartFile[] files) {
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+
+            @RequestParam("files") MultipartFile[] files,
+
+            @RequestParam(value = "factoryId", required = false) Long factoryId,
+            @RequestParam(value = "targetId", required = false) Long targetId, Model model) {
 
         // Validate
         if (newProductBindingResult.hasErrors()) {
             return "admin/product/update";
+        }
+        if (categoryId == null || factoryId == null || targetId == null) {
+            if (categoryId == null) {
+                model.addAttribute("categoryError", "Vui lòng chọn danh mục.");
+            }
+            if (factoryId == null) {
+                model.addAttribute("factoryError", "Vui lòng chọn nhà cung cấp.");
+            }
+            if (targetId == null) {
+                model.addAttribute("targetError", "Vui lòng chọn mục tiêu.");
+            }
+            return "admin/product/create";
         }
 
         Optional<Product> currentProductOpt = this.productService.fetchProductById(pr.getId());

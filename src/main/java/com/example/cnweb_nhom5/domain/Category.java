@@ -27,6 +27,7 @@ public class Category {
     @NotBlank(message = "Tên danh mục không được để chống")
     private String name;
 
+    @NotBlank(message = "Chi tiết danh mục không được để chống")
     private String description;
 
     // category - one => many - products
